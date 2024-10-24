@@ -117,7 +117,24 @@ class ReDetailScreen extends StatelessWidget {
                   SizedBox(height: 16,),
                   Divider(color: Colors.deepPurple.shade100,),
                   SizedBox(height: 16,),
+
                   // Description
+                  Row(children: [
+                    Text(
+                      'Deskripsi',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                  ),
+                  Row(children: [
+                    Text(
+                      '${candi.description}',
+                    ),
+                  ],
+                  ),
                 ],
               ),
             ),
