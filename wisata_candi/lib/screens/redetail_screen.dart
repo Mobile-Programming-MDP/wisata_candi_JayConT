@@ -37,7 +37,9 @@ class ReDetailScreen extends StatelessWidget {
                       shape: BoxShape.circle,
                     ),
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
                       icon: const Icon(
                         Icons.arrow_back,
                       ),
@@ -129,11 +131,14 @@ class ReDetailScreen extends StatelessWidget {
                     ),
                   ],
                   ),
-                  Row(children: [
-                    Text(
-                      '${candi.description}',
-                    ),
-                  ],
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          '${candi.description}',
+                        ),
+                      ),
+                    ],
                   ),
                 ],
               ),
