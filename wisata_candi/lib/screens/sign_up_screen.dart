@@ -1,8 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignUpScreen extends StatefulWidget {
-  SignUpScreen({super.key});
+  const SignUpScreen({super.key});
 
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
@@ -23,10 +24,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool _obscurePassword = true;
 
   // TODO: Sign Up Method
-  void _signUp() {
+  void _signUp() async {
     final String name = _fullnameController.text.trim();
     final String username = _usernameController.text.trim();
     final String password = _passwordController.text.trim();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     if (
       password.length < 8 ||
@@ -35,29 +37,33 @@ class _SignUpScreenState extends State<SignUpScreen> {
       !password.contains(RegExp(r'[0-9]')) ||
       !password.contains(RegExp(r'[!@#\\\$%^&*(),.?":{}|<>]'))
     ) {
-      _errorText = 'Minimal 8 karakter. Harus mengandung huruf kapital, huruf kecil, angka numerik, dan simbol.';
+      setState(() {
+        _errorText = 'Minimal 8 karakter. Harus mengandung huruf kapital, huruf kecil, angka numerik, dan simbol.';
+      });
+      return;
     }
 
-    print("SIGN UP SUCCESSFUL");
-    print("Name: $name");
-    print("Username: $username");
-    print("Password: $password");
+    // Save user data to SharedPreferences
+    prefs.setString('fullname', name);
+    prefs.setString('username', username);
+    prefs.setString('password', password);
+
+    // Navigate to SignInScreen
+    Navigator.pushReplacementNamed(context, '/signin');
   }
 
   // TODO: Dispose Method
   @override
   void dispose() {
     // TODO: implement dispose
-    _fullnameController.dispose();
-    _usernameController.dispose();
-    _passwordController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       // TODO: AppBar
-      appBar: AppBar(title: Text('Sign Up'),),
+      appBar: AppBar(title: const Text('Sign Up'),),
       // TODO: Body
       body: Center(
         child: SingleChildScrollView(
@@ -72,28 +78,28 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   // TODO: TextFormField - Full Name
                   TextFormField(
                     controller: _fullnameController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: "Nama Lengkap",
                       border: OutlineInputBorder(),
                     ),
                   ),
                   // TODO: TextFormField - Username
-                  SizedBox(height: 20,),
+                  const SizedBox(height: 20,),
                   TextFormField(
                     controller: _usernameController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: "Nama Pengguna",
                       border: OutlineInputBorder(),
                     ),
                   ),
                   // TODO: TextFormField - Password
-                  SizedBox(height: 20,),
+                  const SizedBox(height: 20,),
                   TextFormField(
                     controller: _passwordController,
                     decoration: InputDecoration(
                       labelText: "Kata Sandi",
                       errorText: _errorText.isNotEmpty ? _errorText : null,
-                      border: OutlineInputBorder(),
+                      border: const OutlineInputBorder(),
                       suffixIcon: IconButton(
                         onPressed: () {
                           setState(() {
@@ -107,33 +113,35 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                     obscureText: _obscurePassword,
                   ),
-                  // TODO: ElevatedButton - Sign In
-                  SizedBox(height: 20,),
+                  // TODO: ElevatedButton - Sign Up
+                  const SizedBox(height: 20,),
                   ElevatedButton(
                     onPressed: () {
                       _signUp();
                     },
-                    child: Text('Sign Up')
+                    child: const Text('Sign Up')
                   ),
                   // TODO: Sign Up Button
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
                   RichText(
                     text: TextSpan(
                       text: 'Sudah punya akun? ',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16,
                         color: Colors.deepPurple
                       ),
                       children: <TextSpan>[
                         TextSpan(
                           text: 'Log in di sini.',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.blue,
                             decoration: TextDecoration.underline,
                             fontSize: 16,
                           ),
                           recognizer: TapGestureRecognizer()
-                            ..onTap = () {},
+                            ..onTap = () {
+                              Navigator.pushNamed(context, '/signin');
+                            },
                         )
                       ]
                     ),

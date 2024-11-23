@@ -1,8 +1,9 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SignInScreen extends StatefulWidget {
-  SignInScreen({super.key});
+  const SignInScreen({super.key});
 
   @override
   State<SignInScreen> createState() => _SignInScreenState();
@@ -20,11 +21,49 @@ class _SignInScreenState extends State<SignInScreen> {
 
   bool _obscurePassword = true;
 
+  void _signIn() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String savedUsername = prefs.getString('username') ?? '';
+    final String savedPassword = prefs.getString('password') ?? '';
+    final String enteredUsername = _usernameController.text.trim();
+    final String enteredPassword = _passwordController.text.trim();
+
+    if (enteredUsername.isEmpty || enteredPassword.isEmpty) {
+      setState(() {
+        _errorText = 'Username and password must be filled in.';
+      });
+      return;
+    } else if (savedUsername.isEmpty || savedPassword.isEmpty) {
+      setState(() {
+        _errorText = 'Unregistered user. Please sign up first.';
+      });
+      return;
+    } else if (enteredUsername == savedUsername && enteredPassword == savedPassword) {
+      setState(() {
+        _errorText = '';
+        _isSignedIn = true;
+        prefs.setBool('isSignedIn', true);
+      });
+      // Remove pages from navigation
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.of(context).popUntil((route) => route.isFirst);
+      });
+      // Successful sign in, return to main screen
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Navigator.pushReplacementNamed(context, '/');
+      });
+    } else {
+      setState(() {
+        _errorText = 'Username or password is incorrect.';
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       // TODO: AppBar
-      appBar: AppBar(title: Text('Sign In'),),
+      appBar: AppBar(title: const Text('Sign In'),),
       // TODO: Body
       body: Center(
         child: SingleChildScrollView(
@@ -39,19 +78,19 @@ class _SignInScreenState extends State<SignInScreen> {
                   // TODO: TextFormField - Username
                   TextFormField(
                     controller: _usernameController,
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: "Nama Pengguna",
                       border: OutlineInputBorder(),
                     ),
                   ),
                   // TODO: TextFormField - Password
-                  SizedBox(height: 20,),
+                  const SizedBox(height: 20,),
                   TextFormField(
                     controller: _passwordController,
                     decoration: InputDecoration(
                       labelText: "Kata Sandi",
                       errorText: _errorText.isNotEmpty ? _errorText : null,
-                      border: OutlineInputBorder(),
+                      border: const OutlineInputBorder(),
                       suffixIcon: IconButton(
                         onPressed: () {
                           setState(() {
@@ -66,13 +105,13 @@ class _SignInScreenState extends State<SignInScreen> {
                     obscureText: _obscurePassword,
                   ),
                   // TODO: ElevatedButton - Sign In
-                  SizedBox(height: 20,),
+                  const SizedBox(height: 20,),
                   ElevatedButton(
-                    onPressed: () {},
-                    child: Text('Sign In')
+                    onPressed: _signIn,
+                    child: const Text('Sign In')
                   ),
                   // TODO: Sign Up Button
-                  SizedBox(height: 10,),
+                  const SizedBox(height: 10,),
                   // TextButton(
                   //   onPressed: () {},
                   //   child: Text('Belum punya akun? Daftar di sini.'),
@@ -80,20 +119,22 @@ class _SignInScreenState extends State<SignInScreen> {
                   RichText(
                     text: TextSpan(
                       text: 'Belum punya akun? ',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16,
                         color: Colors.deepPurple
                       ),
-                      children: <TextSpan>[
+                      children: [
                         TextSpan(
                           text: 'Daftar di sini.',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.blue,
                             decoration: TextDecoration.underline,
                             fontSize: 16,
                           ),
                           recognizer: TapGestureRecognizer()
-                            ..onTap = () {},
+                            ..onTap = () {
+                              Navigator.pushNamed(context, '/signup');
+                            },
                         )
                       ]
                     ),

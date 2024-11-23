@@ -11,6 +11,7 @@ class ItemCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
+      // TODO: Implement Routing to Detail Screen
       onTap: () {
         Navigator.push(
           context,
@@ -20,7 +21,6 @@ class ItemCard extends StatelessWidget {
         );
       },
       child: Card(
-        // TODO: Implement Routing to Detail Screen
         // TODO: Parameters (shape, margin, elevation) of Card
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
         margin: EdgeInsets.all(4),

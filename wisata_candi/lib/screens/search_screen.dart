@@ -12,6 +12,7 @@ class _SearchScreenState extends State<SearchScreen> {
   final List<Candi> _filteredCandis = candiList;
   final String _searchQuery = '';
   final TextEditingController _searchController = TextEditingController();
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -17,9 +17,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   // TODO: 5. SignIn Function
   void signIn () {
-    setState(() {
-      isSignedIn = !isSignedIn;
-    });
+    // setState(() {
+    //   isSignedIn = !isSignedIn;
+    // });
+    Navigator.pushNamed(context, '/signin');
   }
   // TODO: 6. SignOut Function
   void signOut () {
@@ -58,7 +59,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                             shape: BoxShape.circle,
                           ),
-                          child: CircleAvatar(
+                          child: const CircleAvatar(
                             radius: 50,
                             backgroundImage: AssetImage('images/placeholder_image.png'),
                           ),
@@ -76,18 +77,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
                 // TODO: 3. Profile Info containing profile information
-                SizedBox(height: 20,),
+                const SizedBox(height: 20,),
                 Divider(color: Colors.deepPurple[100],),
-                SizedBox(height: 4,),
+                const SizedBox(height: 4,),
                 ProfileInfoItem(
                   icon: Icons.lock,
                   label: 'Pengguna',
                   value: userName,
                   iconColor: Colors.amber,
                 ),
-                SizedBox(height: 4,),
+                const SizedBox(height: 4,),
                 Divider(color: Colors.deepPurple[100],),
-                SizedBox(height: 4,),
+                const SizedBox(height: 4,),
                 ProfileInfoItem(
                   icon: Icons.person,
                   label: 'Nama',
@@ -98,9 +99,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   },
                   iconColor: Colors.blue,
                 ),
-                SizedBox(height: 4,),
+                const SizedBox(height: 4,),
                 Divider(color: Colors.deepPurple[100],),
-                SizedBox(height: 4,),
+                const SizedBox(height: 4,),
                 ProfileInfoItem(
                   icon: Icons.favorite,
                   label: 'Favorit',
@@ -108,14 +109,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   iconColor: Colors.red,
                 ),
                 // TODO: 4. Profile Actions containing TextButtons for signing in and out
-                SizedBox(height: 4,),
+                const SizedBox(height: 4,),
                 Divider(color: Colors.deepPurple[100],),
-                SizedBox(height: 20,),
+                const SizedBox(height: 20,),
                 isSignedIn ? TextButton(
-                  onPressed: signOut, child: Text('Sign Out')
+                  onPressed: signOut, child: const Text('Sign Out')
                   )
                   : TextButton(
-                    onPressed: signIn, child: Text('Sign In')
+                    onPressed: signIn, child: const Text('Sign In')
                   ),
               ],
             ),

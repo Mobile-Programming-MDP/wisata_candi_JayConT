@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wisata_candi/data/candi_data.dart';
 import 'package:wisata_candi/screens/favorite_screen.dart';
 import 'package:wisata_candi/screens/home_screen.dart';
-import 'package:wisata_candi/screens/profil_screen.dart';
+import 'package:wisata_candi/screens/profile_screen.dart';
 import 'package:wisata_candi/screens/redetail_screen.dart';
 import 'package:wisata_candi/screens/search_screen.dart';
 import 'package:wisata_candi/screens/sign_in_screen.dart';
@@ -35,8 +35,13 @@ class MyApp extends StatelessWidget {
         ),
         useMaterial3: true,
       ),
-      // home: MainScreen(),
-      home: SignUpScreen(),
+      home: const MainScreen(),
+      initialRoute: '/signin',
+      routes: {
+        '/homescreen': (context) => const HomeScreen(),
+        '/signin': (context) => const SignInScreen(),
+        '/signup': (context) => const SignUpScreen(),
+      },
     );
   }
 }
@@ -52,10 +57,10 @@ class _MainScreenState extends State<MainScreen> {
   // TODO: Variable Declaration
   int _currentIndex = 0;
   final List<Widget> _children = [
-    HomeScreen(),
-    SearchScreen(),
-    FavoriteScreen(),
-    ProfileScreen(),
+    const HomeScreen(),
+    const SearchScreen(),
+    const FavoriteScreen(),
+    const ProfileScreen(),
   ];
 
   @override
@@ -76,7 +81,7 @@ class _MainScreenState extends State<MainScreen> {
               _currentIndex = index;
             });
           },
-          items: [
+          items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.home, color: Colors.deepPurple,),
               label: 'Home'
